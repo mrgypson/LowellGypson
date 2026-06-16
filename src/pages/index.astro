@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MemorialHeader from '../components/MemorialHeader.astro';
+import VideoPlayer from '../components/VideoPlayer.astro';
+import ObituaryContent from '../components/ObituaryContent.astro';
+import PhotoGallery from '../components/PhotoGallery.astro';
+import TributeList from '../components/TributeList.astro';
+import TributeForm from '../components/TributeForm.astro';
+import { getApprovedTributes, getMemorialPage, getMemorialPhotos } from '../lib/content';
+
+export const prerender = false;
+
+const [memorial, tributes, photos] = await Promise.all([
+	getMemorialPage(),
+	getApprovedTributes(),
+	getMemorialPhotos(),
+]);
+
+const title = memorial.headline;
+const description = memorial.seoDescription;
+const ogImage = memorial.portrait.src.startsWith('http') ? memorial.portrait.src : undefined;
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+	<div class="memorial-page" id="memorial-page" data-testid="memorial-page">
+		<MemorialHeader
+			headline={memorial.headline}
+			lifeDates={memorial.lifeDates}
+			epitaph={memorial.epitaph}
+		/>
+
+		<VideoPlayer videoId={memorial.videoId} title={memorial.headline} />
+
+		<section class="memorial-story" aria-labelledby="memorial-story-heading">
+			<h2 class="visually-hidden" id="memorial-story-heading">Life story</h2>
+			<div class="memorial-story-grid">
+				<figure class="memorial-portrait" id="memorial-portrait" data-testid="memorial-portrait">
+					<img
+						src={memorial.portrait.src}
+						alt={memorial.portrait.alt}
+						width="480"
+						height="640"
+						loading="eager"
+						decoding="async"
+					/>
+				</figure>
+				<div class="memorial-obituary">
+					<ObituaryContent blocks={memorial.obituary} />
+				</div>
+			</div>
+		</section>
+
+		<PhotoGallery photos={photos} />
+		<TributeList tributes={tributes} />
+		<TributeForm />
+	</div>
+</BaseLayout>

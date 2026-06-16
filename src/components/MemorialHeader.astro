@@ -1,0 +1,23 @@
+---
+interface Props {
+	headline: string;
+	lifeDates: string;
+	epitaph?: string;
+}
+
+const { headline, lifeDates, epitaph } = Astro.props;
+---
+
+<header class="memorial-header" id="memorial-header">
+	<h1 class="memorial-header-title" id="memorial-header-title" data-testid="memorial-header-title">
+		{headline}
+	</h1>
+	<p class="memorial-header-dates" id="memorial-header-dates" data-testid="memorial-header-dates">
+		{lifeDates}
+	</p>
+	{epitaph && (
+		<p class="memorial-header-epitaph" id="memorial-header-epitaph" data-testid="memorial-header-epitaph">
+			<em>{epitaph}</em>
+		</p>
+	)}
+</header>

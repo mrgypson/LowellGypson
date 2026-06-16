@@ -1,0 +1,111 @@
+<section class="tribute-form-section" aria-labelledby="tribute-form-heading">
+	<h2 class="section-heading" id="tribute-form-heading" data-testid="tribute-form-heading">
+		Leave a tribute
+	</h2>
+	<p class="tribute-form-lede">
+		Share a memory or message. Tributes are reviewed before they appear on this page.
+	</p>
+	<form
+		class="tribute-form"
+		id="tribute-form"
+		data-testid="tribute-form"
+		method="post"
+		action="/api/tribute"
+	>
+		<div class="form-field">
+			<label for="tribute-author-name">Your name</label>
+			<input
+				type="text"
+				id="tribute-author-name"
+				name="authorName"
+				required
+				maxlength="80"
+				autocomplete="name"
+				data-testid="tribute-form-name"
+			/>
+		</div>
+		<div class="form-field">
+			<label for="tribute-relationship">Relationship <span class="optional">(optional)</span></label>
+			<input
+				type="text"
+				id="tribute-relationship"
+				name="relationship"
+				maxlength="60"
+				placeholder="e.g. Friend, Congregation member"
+				data-testid="tribute-form-relationship"
+			/>
+		</div>
+		<div class="form-field">
+			<label for="tribute-message">Your message</label>
+			<textarea
+				id="tribute-message"
+				name="message"
+				required
+				maxlength="1000"
+				rows="5"
+				data-testid="tribute-form-message"
+			></textarea>
+		</div>
+		<div class="visually-hidden" aria-hidden="true">
+			<label for="tribute-company">Company</label>
+			<input
+				type="text"
+				id="tribute-company"
+				name="_company"
+				tabindex="-1"
+				autocomplete="off"
+				data-testid="tribute-form-honeypot"
+			/>
+		</div>
+		<button type="submit" class="btn-primary" id="tribute-submit" data-testid="tribute-form-submit">
+			Submit tribute
+		</button>
+		<p class="form-status" id="tribute-form-status" role="status" aria-live="polite" hidden></p>
+	</form>
+</section>
+
+<script>
+	const form = document.getElementById('tribute-form') as HTMLFormElement | null;
+	const statusEl = document.getElementById('tribute-form-status') as HTMLParagraphElement | null;
+
+	form?.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		if (!form || !statusEl) return;
+
+		const submitBtn = form.querySelector('[type="submit"]') as HTMLButtonElement | null;
+		submitBtn?.setAttribute('disabled', 'true');
+		statusEl.hidden = false;
+		statusEl.textContent = 'Sending…';
+		statusEl.className = 'form-status';
+
+		const formData = new FormData(form);
+		const body = {
+			authorName: formData.get('authorName'),
+			relationship: formData.get('relationship'),
+			message: formData.get('message'),
+			_company: formData.get('_company'),
+		};
+
+		try {
+			const res = await fetch('/api/tribute', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
+			});
+			const data = (await res.json()) as { ok?: boolean; error?: string };
+			if (!res.ok || !data.ok) {
+				throw new Error(data.error || 'Something went wrong. Please try again.');
+			}
+			form.reset();
+			statusEl.textContent =
+				'Thank you. Your tribute has been received and will appear after it is reviewed.';
+			statusEl.className = 'form-status form-status--success';
+		} catch (err) {
+			statusEl.textContent =
+				err instanceof Error ? err.message : 'Something went wrong. Please try again.';
+			statusEl.className = 'form-status form-status--error';
+		} finally {
+			submitBtn?.removeAttribute('disabled');
+		}
+	});
+</script>

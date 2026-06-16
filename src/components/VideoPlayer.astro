@@ -1,0 +1,29 @@
+---
+interface Props {
+	videoId: string;
+	title?: string;
+}
+
+const { videoId, title = 'Memorial video' } = Astro.props;
+const embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
+const posterUrl = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+---
+
+<section class="video-section" aria-label="Memorial video">
+	<div class="video-player" id="video-player" data-testid="video-player">
+		<iframe
+			src={embedUrl}
+			title={title}
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+			allowfullscreen
+			loading="lazy"
+			data-testid="video-player-iframe"
+		></iframe>
+	</div>
+	<noscript>
+		<a class="video-fallback" href={`https://youtu.be/${videoId}`} data-testid="video-fallback-link">
+			<img src={posterUrl} alt="" width="1280" height="720" />
+			<span>Watch memorial video on YouTube</span>
+		</a>
+	</noscript>
+</section>

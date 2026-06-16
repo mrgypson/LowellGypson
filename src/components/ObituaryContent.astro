@@ -1,0 +1,26 @@
+---
+import type { PortableTextBlock } from '@portabletext/types';
+import { toHTML } from '@portabletext/to-html';
+
+interface Props {
+	blocks: PortableTextBlock[];
+}
+
+const { blocks } = Astro.props;
+
+const html = toHTML(blocks, {
+	components: {
+		marks: {
+			em: ({ children }) => `<em>${children}</em>`,
+			strong: ({ children }) => `<strong>${children}</strong>`,
+		},
+	},
+});
+---
+
+<div
+	class="obituary-prose"
+	id="obituary-prose"
+	data-testid="obituary-prose"
+	set:html={html}
+/>

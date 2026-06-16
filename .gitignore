@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.vercel/
+.env
+.env.*
+!.env.example
+studio/node_modules/
+studio/dist/
+studio/.env
+studio/.env.*
+!studio/.env.example
+studio/.sanity/
+.DS_Store

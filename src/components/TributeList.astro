@@ -1,0 +1,53 @@
+---
+import type { Tribute } from '../types/memorial';
+
+interface Props {
+	tributes: Tribute[];
+}
+
+const { tributes } = Astro.props;
+
+function formatDate(iso: string): string {
+	try {
+		return new Intl.DateTimeFormat('en-US', {
+			month: 'long',
+			day: 'numeric',
+			year: 'numeric',
+		}).format(new Date(iso));
+	} catch {
+		return '';
+	}
+}
+---
+
+<section class="tributes-section" aria-labelledby="tributes-heading">
+	<h2 class="section-heading" id="tributes-heading" data-testid="tributes-heading">
+		Tributes
+	</h2>
+	{
+		tributes.length === 0 ? (
+			<p class="tributes-empty" data-testid="tributes-empty">
+				Be the first to leave a tribute below.
+			</p>
+		) : (
+			<ul class="tributes-list" id="tributes-list" data-testid="tributes-list">
+				{tributes.map((tribute) => (
+					<li class="tribute-card" data-testid={`tribute-${tribute.id}`}>
+						<blockquote class="tribute-message">{tribute.message}</blockquote>
+						<footer class="tribute-meta">
+							<cite class="tribute-author">{tribute.authorName}</cite>
+							{tribute.relationship && (
+								<span class="tribute-relationship"> — {tribute.relationship}</span>
+							)}
+							{formatDate(tribute.submittedAt) && (
+								<time class="tribute-date" datetime={tribute.submittedAt}>
+									{formatDate(tribute.submittedAt)}
+								</time>
+							)}
+						</footer>
+					</li>
+				))}
+			</ul>
+		)
+	}
+</section>

@@ -1,0 +1,39 @@
+---
+import Analytics from '@vercel/analytics/astro';
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+const fontsHref =
+	'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href={fontsHref} media="print" onload="this.media='all'" />
+		<noscript>
+			<link rel="stylesheet" href={fontsHref} />
+		</noscript>
+		<SeoHead title={title} description={description} ogImage={ogImage} />
+	</head>
+	<body>
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<main id="main-content" class="memorial-main">
+			<slot />
+		</main>
+		<footer class="site-footer" id="site-footer" data-testid="site-footer">
+			<p>In memory of Lowell Hunter Gypson III</p>
+		</footer>
+		<Analytics />
+	</body>
+</html>
