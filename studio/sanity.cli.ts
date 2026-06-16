@@ -1,11 +1,12 @@
 import { defineCliConfig } from 'sanity/cli';
+import { SANITY_DATASET, SANITY_PROJECT_ID, SANITY_STUDIO_HOST } from './env';
 
 export default defineCliConfig({
 	api: {
-		projectId: process.env.SANITY_PROJECT_ID ?? '',
-		dataset: process.env.SANITY_DATASET ?? 'production',
+		projectId: SANITY_PROJECT_ID,
+		dataset: SANITY_DATASET,
 	},
-	studioHost: process.env.SANITY_STUDIO_HOST ?? 'lowell-gypson',
+	studioHost: SANITY_STUDIO_HOST,
 	deployment: {
 		appId: 'yg0s5lq8gh6tcc0uize9bcs3',
 	},

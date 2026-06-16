@@ -41,7 +41,7 @@ async function uploadPortrait() {
 	});
 	return {
 		_type: 'image',
-		alt: 'Lowell Hunter Gypson III, young portrait',
+		alt: 'Lowell Hunter Gypson III reading at church',
 		asset: {
 			_type: 'reference',
 			_ref: asset._id,

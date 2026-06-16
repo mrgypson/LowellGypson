@@ -9,7 +9,7 @@ export const mockMemorialPage: MemorialPage = {
 	videoId: 'G2VFZVTJZgI',
 	portrait: {
 		src: '/images/lowell-portrait.jpg',
-		alt: 'Lowell Hunter Gypson III, young portrait',
+		alt: 'Lowell Hunter Gypson III reading at church',
 	},
 	obituary: obituaryBlocks,
 	seoDescription:

@@ -12,3 +12,4 @@ studio/.env.*
 !studio/.env.example
 studio/.sanity/
 .DS_Store
+.vercel

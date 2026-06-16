@@ -17,7 +17,7 @@ export function mapSanityMemorialPage(doc: SanityMemorialPageDoc | null): Memori
 		videoId: doc.videoId?.trim() || 'G2VFZVTJZgI',
 		portrait: {
 			src: portraitSrc,
-			alt: doc.portrait?.alt?.trim() || 'Lowell Hunter Gypson III, young portrait',
+			alt: doc.portrait?.alt?.trim() || 'Lowell Hunter Gypson III reading at church',
 		},
 		obituary: doc.obituary ?? [],
 		seoDescription:
