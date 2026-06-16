@@ -6,7 +6,7 @@ export function mapSanityMemorialPage(doc: SanityMemorialPageDoc | null): Memori
 	if (!doc) return null;
 
 	const portraitSrc = doc.portrait?.asset
-		? urlForImage(doc.portrait.asset, SANITY_IMAGE_MAX_WIDTH_PORTRAIT)
+		? urlForImage(doc.portrait, SANITY_IMAGE_MAX_WIDTH_PORTRAIT)
 		: PLACEHOLDER_PORTRAIT_SRC;
 
 	return {

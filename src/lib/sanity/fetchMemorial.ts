@@ -32,7 +32,7 @@ export async function fetchMemorialPhotosFromSanity(): Promise<MemorialPhoto[]> 
 		.filter((doc) => doc.image?.asset)
 		.map((doc) => ({
 			id: doc._id,
-			src: urlForImage(doc.image?.asset),
+			src: urlForImage(doc.image),
 			alt: doc.image?.alt?.trim() || doc.caption?.trim() || 'Memorial photo',
 			caption: doc.caption?.trim() || undefined,
 		}));
