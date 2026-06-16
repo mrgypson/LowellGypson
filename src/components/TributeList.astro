@@ -7,6 +7,8 @@ interface Props {
 
 const { tributes } = Astro.props;
 
+const LONG_TRIBUTE_LENGTH = 500;
+
 function formatDate(iso: string): string {
 	try {
 		return new Intl.DateTimeFormat('en-US', {
@@ -17,6 +19,18 @@ function formatDate(iso: string): string {
 	} catch {
 		return '';
 	}
+}
+
+function truncateAtWord(text: string, maxLength: number): string {
+	if (text.length <= maxLength) return text;
+	const slice = text.slice(0, maxLength);
+	const lastSpace = slice.lastIndexOf(' ');
+	const trimmed = (lastSpace > 0 ? slice.slice(0, lastSpace) : slice).trimEnd();
+	return `${trimmed}…`;
+}
+
+function isLongTribute(message: string): boolean {
+	return message.length > LONG_TRIBUTE_LENGTH;
 }
 ---
 
@@ -31,23 +45,78 @@ function formatDate(iso: string): string {
 			</p>
 		) : (
 			<ul class="tributes-list" id="tributes-list" data-testid="tributes-list">
-				{tributes.map((tribute) => (
-					<li class="tribute-card" data-testid={`tribute-${tribute.id}`}>
-						<blockquote class="tribute-message">{tribute.message}</blockquote>
-						<footer class="tribute-meta">
-							<cite class="tribute-author">{tribute.authorName}</cite>
-							{tribute.relationship && (
-								<span class="tribute-relationship"> — {tribute.relationship}</span>
-							)}
-							{formatDate(tribute.submittedAt) && (
-								<time class="tribute-date" datetime={tribute.submittedAt}>
-									{formatDate(tribute.submittedAt)}
-								</time>
-							)}
-						</footer>
-					</li>
-				))}
+				{tributes.map((tribute) => {
+					const long = isLongTribute(tribute.message);
+					const messageId = `tribute-message-${tribute.id}`;
+					return (
+						<li class="tribute-card" data-testid={`tribute-${tribute.id}`}>
+							<div class:list={['tribute-message-wrap', { 'tribute-message-wrap--long': long }]}>
+								<blockquote
+									class="tribute-message"
+									id={messageId}
+									data-testid={`tribute-message-${tribute.id}`}
+								>
+									{long ? (
+										<>
+											<span class="tribute-message-short">{truncateAtWord(tribute.message, LONG_TRIBUTE_LENGTH)}</span>
+											<span class="tribute-message-full" hidden>
+												{tribute.message}
+											</span>
+										</>
+									) : (
+										tribute.message
+									)}
+								</blockquote>
+								{long && (
+									<button
+										type="button"
+										class="tribute-toggle"
+										aria-expanded="false"
+										aria-controls={messageId}
+										data-testid={`tribute-toggle-${tribute.id}`}
+									>
+										Read more
+									</button>
+								)}
+							</div>
+							<footer class="tribute-meta">
+								<cite class="tribute-author">{tribute.authorName}</cite>
+								{tribute.relationship && (
+									<span class="tribute-relationship"> — {tribute.relationship}</span>
+								)}
+								{formatDate(tribute.submittedAt) && (
+									<time class="tribute-date" datetime={tribute.submittedAt}>
+										{formatDate(tribute.submittedAt)}
+									</time>
+								)}
+							</footer>
+						</li>
+					);
+				})}
 			</ul>
 		)
 	}
 </section>
+
+<script>
+	document.querySelectorAll('.tribute-toggle').forEach((button) => {
+		button.addEventListener('click', () => {
+			const wrap = button.closest('.tribute-message-wrap');
+			if (!wrap) return;
+
+			const expanded = wrap.classList.toggle('tribute-message-wrap--expanded');
+			const shortEl = wrap.querySelector('.tribute-message-short');
+			const fullEl = wrap.querySelector('.tribute-message-full');
+
+			if (shortEl instanceof HTMLElement) {
+				shortEl.hidden = expanded;
+			}
+			if (fullEl instanceof HTMLElement) {
+				fullEl.hidden = !expanded;
+			}
+
+			button.setAttribute('aria-expanded', String(expanded));
+			button.textContent = expanded ? 'Show less' : 'Read more';
+		});
+	});
+</script>

@@ -294,6 +294,43 @@ textarea:focus-visible {
 	line-height: var(--line-body);
 }
 
+.tribute-message-wrap--long .tribute-message {
+	margin-bottom: var(--space-1);
+}
+
+.tribute-toggle {
+	display: inline-block;
+	margin: 0 0 var(--space-2);
+	padding: 0;
+	border: 0;
+	background: none;
+	font-family: var(--font-ui);
+	font-size: 0.9rem;
+	font-weight: 500;
+	color: var(--color-muted);
+	text-decoration: underline;
+	text-underline-offset: 0.15em;
+	cursor: pointer;
+}
+
+.tribute-toggle:hover {
+	color: var(--color-text);
+}
+
+@media (min-width: 48rem) {
+	.tribute-message-wrap--long .tribute-message-short {
+		display: none;
+	}
+
+	.tribute-message-wrap--long .tribute-message-full {
+		display: block !important;
+	}
+
+	.tribute-toggle {
+		display: none;
+	}
+}
+
 .tribute-meta {
 	font-size: 0.9rem;
 	color: var(--color-muted);
