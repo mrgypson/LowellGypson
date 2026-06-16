@@ -1,6 +1,6 @@
 const MAX_NAME = 80;
 const MAX_RELATIONSHIP = 60;
-const MAX_MESSAGE = 1000;
+const MAX_MESSAGE = 2000;
 
 export type TributePayload = {
 	authorName: string;

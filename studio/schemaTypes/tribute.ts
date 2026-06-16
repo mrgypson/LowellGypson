@@ -22,7 +22,7 @@ export const tribute = defineType({
 			title: 'Message',
 			type: 'text',
 			rows: 5,
-			validation: (Rule) => Rule.required().max(1000),
+			validation: (Rule) => Rule.required().max(2000),
 		}),
 		defineField({
 			name: 'status',
