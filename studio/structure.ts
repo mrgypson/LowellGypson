@@ -12,11 +12,19 @@ export const structure: StructureResolver = (S) =>
 				.child(S.document().schemaType('memorialPage').documentId(MEMORIAL_PAGE_DOC_ID)),
 			S.divider(),
 			S.listItem()
-				.title('Pending Tributes')
+				.title('Published Tributes')
 				.child(
 					S.documentList()
-						.title('Pending Tributes')
-						.filter('_type == "tribute" && status == "pending"')
+						.title('Published Tributes')
+						.filter('_type == "tribute" && status == "approved"')
+						.defaultOrdering([{ field: 'submittedAt', direction: 'desc' }]),
+				),
+			S.listItem()
+				.title('Hidden Tributes')
+				.child(
+					S.documentList()
+						.title('Hidden Tributes')
+						.filter('_type == "tribute" && status == "rejected"')
 						.defaultOrdering([{ field: 'submittedAt', direction: 'desc' }]),
 				),
 			S.listItem()

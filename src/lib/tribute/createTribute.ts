@@ -6,14 +6,14 @@ export type CreateTributeInput = {
 	message: string;
 };
 
-export async function createPendingTribute(input: CreateTributeInput): Promise<void> {
+export async function createTribute(input: CreateTributeInput): Promise<void> {
 	const client = getSanityWriteClient();
 	await client.create({
 		_type: 'tribute',
 		authorName: input.authorName,
 		relationship: input.relationship ?? '',
 		message: input.message,
-		status: 'pending',
+		status: 'approved',
 		submittedAt: new Date().toISOString(),
 	});
 }

@@ -30,13 +30,13 @@ export const tribute = defineType({
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Pending review', value: 'pending' },
-					{ title: 'Approved', value: 'approved' },
-					{ title: 'Rejected', value: 'rejected' },
+					{ title: 'Published', value: 'approved' },
+					{ title: 'Hidden (taken down)', value: 'rejected' },
 				],
 				layout: 'radio',
 			},
-			initialValue: 'pending',
+			initialValue: 'approved',
+			description: 'Set to Hidden to remove a tribute from the public site.',
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({

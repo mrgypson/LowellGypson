@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { createPendingTribute } from '../../lib/tribute/createTribute';
+import { createTribute } from '../../lib/tribute/createTribute';
 import { validateTributeBody } from '../../lib/tribute/validateTribute';
 
 export const prerender = false;
@@ -36,7 +36,7 @@ export const POST: APIRoute = async ({ request }) => {
 	}
 
 	try {
-		await createPendingTribute(validated.value);
+		await createTribute(validated.value);
 		return json({ ok: true }, 201);
 	} catch (err) {
 		console.error('[tribute] Failed to create tribute', err);
